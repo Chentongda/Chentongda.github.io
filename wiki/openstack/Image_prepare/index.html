@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang='zh-CN'>
+
+<head>
+  <meta name="generator" content="Hexo 6.0.0">
+  <meta charset="utf-8">
+  
+
+  <meta http-equiv='x-dns-prefetch-control' content='on' />
+  <link rel='dns-prefetch' href='https://cdn.jsdelivr.net'>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+
+  <meta name="renderer" content="webkit">
+  <meta name="force-rendering" content="webkit">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+  <meta name="HandheldFriendly" content="True" >
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+  <meta name="theme-color" content="#f8f8f8">
+  <title>OpenStack：OpenStack 操作系统模板准备 - Fabulist</title>
+
+  
+    <meta name="description" content="准备工具系统镜像 CentOS-7-x86_64-Minimal-2009.iso虚拟化工具 VMware workstation终端工具 MobaXterm  1 部署虚拟机模板1.1 虚拟机配置最小配置：2C 4G 100 2网卡  1.2 点击开启，安装虚拟机传递参数，将网卡名称显示改为 eth0：net.ifnames&#x3D;0 biosdevname&#x3D;0 Enter 安装  1.3 选择时区">
+<meta property="og:type" content="website">
+<meta property="og:title" content="OpenStack 操作系统模板准备">
+<meta property="og:url" content="https://ictd.io/wiki/openstack/Image_prepare/">
+<meta property="og:site_name" content="Fabulist">
+<meta property="og:description" content="准备工具系统镜像 CentOS-7-x86_64-Minimal-2009.iso虚拟化工具 VMware workstation终端工具 MobaXterm  1 部署虚拟机模板1.1 虚拟机配置最小配置：2C 4G 100 2网卡  1.2 点击开启，安装虚拟机传递参数，将网卡名称显示改为 eth0：net.ifnames&#x3D;0 biosdevname&#x3D;0 Enter 安装  1.3 选择时区">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://oss.redshark.cn/20220209100620.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101541.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101632.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101725.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101755.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101826.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101902.png@qn">
+<meta property="og:image" content="https://oss.redshark.cn/20220209101935.png@qn">
+<meta property="article:published_time" content="2022-02-15T03:16:29.152Z">
+<meta property="article:modified_time" content="2022-02-15T03:16:29.152Z">
+<meta property="article:author" content="Fabulist">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://oss.redshark.cn/20220209100620.png@qn">
+  
+  
+
+  <!-- feed -->
+  
+    <link rel="alternate" href="/atom.xml" title="Fabulist" type="application/atom+xml">
+  
+
+  
+    
+<link rel="stylesheet" href="/css/main.css">
+
+  
+
+  
+
+  
+</head>
+
+<body>
+  
+
+
+
+
+  <div class='l_body' id='start'>
+    <aside class='l_left' layout='wiki'>
+    
+
+
+<header class="header">
+
+<div class="logo-wrap wiki"><a style="filter: grayscale(100%)" class="wiki-home cap" href="/wiki"><svg aria-hidden="true" viewBox="0 0 16 16" width="1rem" height="1rem" fill="currentColor"><path fill-rule="evenodd" d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"></path></svg>所有项目</a><a class="title" href="/wiki/openstack/"><div class="main">OpenStack</div><div class="sub cap">搭建的 OpenStack 测试环境</div></a></div>
+</header>
+
+<div class="widgets">
+
+<div class="widget-wrap multi" id="toc"><div class="widget-header cap dis-select"><span class="name">基本环境</span></div><div class="widget-body fs14"><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/"><span class="toc-text">OpenStack 简介</span></a></div><div class="doc-tree active"><a class="doc-tree-link active" href="/wiki/openstack/Image_prepare/"><span class="toc-text">OpenStack 操作系统模板准备</span></a><ol class="toc"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E9%83%A8%E7%BD%B2%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%A8%A1%E6%9D%BF"><span class="toc-text">1 部署虚拟机模板</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#1-1-%E8%99%9A%E6%8B%9F%E6%9C%BA%E9%85%8D%E7%BD%AE"><span class="toc-text">1.1 虚拟机配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-2-%E7%82%B9%E5%87%BB%E5%BC%80%E5%90%AF%EF%BC%8C%E5%AE%89%E8%A3%85%E8%99%9A%E6%8B%9F%E6%9C%BA"><span class="toc-text">1.2 点击开启，安装虚拟机</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-3-%E9%80%89%E6%8B%A9%E6%97%B6%E5%8C%BA"><span class="toc-text">1.3 选择时区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-4-%E5%8A%A0%E8%BD%BD%E4%B8%AD%E6%96%87%EF%BC%8C%E7%94%A8%E4%BB%A5%E6%98%BE%E7%A4%BA%E4%B8%80%E4%BA%9B%E4%B8%AD%E6%96%87%E6%97%A5%E5%BF%97%E5%8F%8A%E7%B3%BB%E7%BB%9F%E6%98%BE%E7%A4%BA"><span class="toc-text">1.4 加载中文，用以显示一些中文日志及系统显示</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-5-%E8%87%AA%E5%AE%9A%E4%B9%89%E5%88%86%E5%8C%BA"><span class="toc-text">1.5 自定义分区</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-6-%E7%A1%AE%E8%AE%A4%E7%BD%91%E5%8D%A1%E5%90%8D%E7%A7%B0"><span class="toc-text">1.6 确认网卡名称</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-7-%E5%90%84%E9%A1%B9%E6%A3%80%E6%9F%A5%E7%A1%AE%E8%AE%A4%E6%97%A0%E8%AF%AF%E5%90%8E%E5%BC%80%E5%A7%8B%E5%AE%89%E8%A3%85"><span class="toc-text">1.7 各项检查确认无误后开始安装</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#1-8-%E8%AE%BE%E7%BD%AE-root-%E5%AF%86%E7%A0%81"><span class="toc-text">1.8 设置 root 密码</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-%E6%A8%A1%E6%9D%BF%E8%99%9A%E6%8B%9F%E6%9C%BA%E7%B3%BB%E7%BB%9F%E5%86%85%E9%85%8D%E7%BD%AE"><span class="toc-text">2 模板虚拟机系统内配置</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#2-1-%E7%BD%91%E7%BB%9C%E8%A7%84%E5%88%92"><span class="toc-text">2.1 网络规划</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-2-%E7%BD%91%E7%BB%9C%E9%85%8D%E7%BD%AE"><span class="toc-text">2.2  网络配置</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-3-%E5%85%B3%E9%97%AD%E9%98%B2%E7%81%AB%E5%A2%99"><span class="toc-text">2.3 关闭防火墙</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-4-%E5%AE%89%E8%A3%85%E4%BE%9D%E8%B5%96%E5%B7%A5%E5%85%B7"><span class="toc-text">2.4 安装依赖工具</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-5-%E6%9B%B4%E6%94%B9%E4%B8%BB%E6%9C%BA%E5%90%8D"><span class="toc-text">2.5 更改主机名</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-6-%E6%97%B6%E9%97%B4%E5%90%8C%E6%AD%A5"><span class="toc-text">2.6 时间同步</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#2-7-reboot-%E9%87%8D%E5%90%AF%E9%AA%8C%E8%AF%81"><span class="toc-text">2.7 reboot 重启验证</span></a></li></ol></li></ol></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/System_environment/"><span class="toc-text">OpenStack 环境准备</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/Identity_service/"><span class="toc-text">Keystone 安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/Image_service/"><span class="toc-text">Glance 安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/Placement_service/"><span class="toc-text">Placement 安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/Compute_service/"><span class="toc-text">Nova 安装</span></a></div><div class="doc-tree"><a class="doc-tree-link" href="/wiki/openstack/Networking_service/"><span class="toc-text">Neutorn 安装</span></a></div></div></div>
+
+
+
+
+</div>
+
+
+    </aside>
+    <div class='l_main'>
+      
+
+      
+
+  
+  
+<div class="bread-nav fs12"><div id="breadcrumb"><a class="cap breadcrumb" id="home" href="/">主页</a><span class="sep"></span><a class="cap breadcrumb" id="menu" href="/wiki/">项目</a><span class="sep"></span><a class="cap breadcrumb" id="proj" href="/wiki/openstack/">OpenStack</a></div><div id="post-meta">更新于&nbsp;<time datetime="2022-02-15T03:16:29.152Z">2022-02-15</time></div></div>
+
+  <article class='content md wiki'>
+  <h1 class="article-title"><span>OpenStack 操作系统模板准备</span></h1>
+  <div class="tag-plugin note" ><div class="title"><strong>准备工具</strong></div><div class="body"><ul><li>系统镜像 <a target="_blank" rel="noopener" href="https://mirrors.tuna.tsinghua.edu.cn/centos/7.9.2009/isos/x86_64/">CentOS-7-x86_64-Minimal-2009.iso</a></li><li>虚拟化工具 <a target="_blank" rel="noopener" href="https://www.vmware.com/cn/products/workstation-pro.html">VMware workstation</a></li><li>终端工具 <a target="_blank" rel="noopener" href="https://mobaxterm.mobatek.net/download.html">MobaXterm</a></li></ul></div></div>
+
+<h2 id="1-部署虚拟机模板"><a href="#1-部署虚拟机模板" class="headerlink" title="1 部署虚拟机模板"></a>1 部署虚拟机模板</h2><h3 id="1-1-虚拟机配置"><a href="#1-1-虚拟机配置" class="headerlink" title="1.1 虚拟机配置"></a>1.1 虚拟机配置</h3><div class="tag-plugin note" ><div class="body"><p>最小配置：2C 4G 100 2网卡</p><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209100620.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-2-点击开启，安装虚拟机"><a href="#1-2-点击开启，安装虚拟机" class="headerlink" title="1.2 点击开启，安装虚拟机"></a>1.2 点击开启，安装虚拟机</h3><div class="tag-plugin note" ><div class="body"><p>传递参数，将网卡名称显示改为 eth0：<br><code>net.ifnames=0 biosdevname=0</code> Enter 安装</p><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101541.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-3-选择时区"><a href="#1-3-选择时区" class="headerlink" title="1.3 选择时区"></a>1.3 选择时区</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101632.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-4-加载中文，用以显示一些中文日志及系统显示"><a href="#1-4-加载中文，用以显示一些中文日志及系统显示" class="headerlink" title="1.4 加载中文，用以显示一些中文日志及系统显示"></a>1.4 加载中文，用以显示一些中文日志及系统显示</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101725.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-5-自定义分区"><a href="#1-5-自定义分区" class="headerlink" title="1.5 自定义分区"></a>1.5 自定义分区</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101755.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-6-确认网卡名称"><a href="#1-6-确认网卡名称" class="headerlink" title="1.6 确认网卡名称"></a>1.6 确认网卡名称</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101826.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-7-各项检查确认无误后开始安装"><a href="#1-7-各项检查确认无误后开始安装" class="headerlink" title="1.7 各项检查确认无误后开始安装"></a>1.7 各项检查确认无误后开始安装</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101902.png@qn" fancybox="true"/></div></div></div></div>
+
+<h3 id="1-8-设置-root-密码"><a href="#1-8-设置-root-密码" class="headerlink" title="1.8 设置 root 密码"></a>1.8 设置 root 密码</h3><div class="tag-plugin note" ><div class="body"><div class="tag-plugin image"><div class="image-bg"><img class="lazy" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAABGdBTUEAALGPC/xhBQAAADhlWElmTU0AKgAAAAgAAYdpAAQAAAABAAAAGgAAAAAAAqACAAQAAAABAAAAAaADAAQAAAABAAAAAQAAAADa6r/EAAAAC0lEQVQIHWNgAAIAAAUAAY27m/MAAAAASUVORK5CYII=" data-src="https://oss.redshark.cn/20220209101935.png@qn" fancybox="true"/></div></div></div></div>
+
+<h2 id="2-模板虚拟机系统内配置"><a href="#2-模板虚拟机系统内配置" class="headerlink" title="2 模板虚拟机系统内配置"></a>2 模板虚拟机系统内配置</h2><h3 id="2-1-网络规划"><a href="#2-1-网络规划" class="headerlink" title="2.1 网络规划"></a>2.1 网络规划</h3><div class="tag-plugin note" ><div class="body"><p>NAT 网络：172.22.7.0&#x2F;24<br>仅主机网络：10.2.7.0&#x2F;24</p></div></div>
+
+<h3 id="2-2-网络配置"><a href="#2-2-网络配置" class="headerlink" title="2.2  网络配置"></a>2.2  网络配置</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">$ vi /etc/sysconfig/network-scripts/ifcfg-eth0</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">NAME=eth0</span><br><span class="line">DEVICE=eth0</span><br><span class="line">ONBOOT=<span class="built_in">yes</span></span><br><span class="line">IPADDR=172.22.7.88</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line">GATEWAY=172.22.7.254</span><br><span class="line">DNS1=223.6.6.6</span><br><span class="line"></span><br><span class="line">$ vi /etc/sysconfig/network-scripts/ifcfg-eth1</span><br><span class="line">TYPE=Ethernet</span><br><span class="line">BOOTPROTO=static</span><br><span class="line">NAME=eth1</span><br><span class="line">DEVICE=eth1</span><br><span class="line">ONBOOT=<span class="built_in">yes</span></span><br><span class="line">IPADDR=10.2.7.88</span><br><span class="line">NETMASK=255.255.255.0</span><br><span class="line"></span><br><span class="line">$ systemctl restart network.service</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-3-关闭防火墙"><a href="#2-3-关闭防火墙" class="headerlink" title="2.3 关闭防火墙"></a>2.3 关闭防火墙</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl <span class="built_in">disable</span> firewalld</span><br><span class="line">$ sed -i s<span class="comment">#SELINUX=enforcing#SELINUX=disabled#g /etc/selinux/config</span></span><br><span class="line">$ systemctl <span class="built_in">disable</span> NetworkManager</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-4-安装依赖工具"><a href="#2-4-安装依赖工具" class="headerlink" title="2.4 安装依赖工具"></a>2.4 安装依赖工具</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">yum install -y vim iotop bc gcc gcc-c++ glibc glibc-devel \</span><br><span class="line">pcre pcre-devel openssl openssl-devel zip unzip zlib zlib-devel \</span><br><span class="line">net-tools lrzsz tree ntpdate telnet lsof tcpdump wget libevent libevent-devel \</span><br><span class="line">systemd-devel bash-completion traceroute bridge-utils</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-5-更改主机名"><a href="#2-5-更改主机名" class="headerlink" title="2.5 更改主机名"></a>2.5 更改主机名</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ vim /etc/hostname</span><br><span class="line">openstack-template.exmaple.local</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-6-时间同步"><a href="#2-6-时间同步" class="headerlink" title="2.6 时间同步"></a>2.6 时间同步</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$ ntpdate time1.aliyun.com     <span class="comment"># whereis ntpdate 可以查 ntpdate绝对路径</span></span><br><span class="line">$ hwclock -w</span><br><span class="line"></span><br><span class="line"><span class="comment"># 将时间同步写到计划任务内</span></span><br><span class="line">$ crontab -e</span><br><span class="line">*/10 * * * * /usr/sbin/ntpdate time1.aliyun.com &amp;&amp; hwclock -w</span><br></pre></td></tr></table></figure>
+
+<h3 id="2-7-reboot-重启验证"><a href="#2-7-reboot-重启验证" class="headerlink" title="2.7 reboot 重启验证"></a>2.7 <code>reboot</code> 重启验证</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">$ systemctl status firewalld</span><br><span class="line">● firewalld.service - firewalld - dynamic firewall daemon</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/firewalld.service; disabled; vendor preset: enabled)</span><br><span class="line">   Active: inactive (dead)</span><br><span class="line">     Docs: man:firewalld(1)</span><br><span class="line"></span><br><span class="line">$ getenforce</span><br><span class="line">Disabled</span><br><span class="line"></span><br><span class="line">$ systemctl status NetworkManager</span><br><span class="line">● NetworkManager.service - Network Manager</span><br><span class="line">   Loaded: loaded (/usr/lib/systemd/system/NetworkManager.service; disabled; vendor preset: enabled)</span><br><span class="line">   Active: inactive (dead)</span><br><span class="line">     Docs: man:NetworkManager(8)</span><br><span class="line"></span><br><span class="line">$ <span class="built_in">date</span></span><br><span class="line">Wed Feb  9 05:10:29 CST 2022</span><br></pre></td></tr></table></figure>
+
+<p>⚠️ <em>确认上述已完成关机快照（不要执行 <code>yum update</code> ，升级或许会使 OpenStack 出现版本兼容问题）</em></p>
+
+  
+
+
+  </article>
+  
+<div class="related-wrap reveal" id="read-next"><section class="header cap theme"><span>接下来阅读</span></section><section class="body fs14"><a id="next" href="/wiki/openstack/System_environment/">OpenStack 环境准备<span class="note">下一篇</span></a><div class="line"></div><a id="prev" href="/wiki/openstack/">OpenStack 简介<span class="note">上一篇</span></a></section></div>
+
+  
+
+
+
+
+      
+<footer class="page-footer reveal fs12"><hr><div class="sitemap"><div class="sitemap-group"><span class="fs14">博客</span><a href="/">近期</a><a href="/categories/">分类</a><a href="/tags/">标签</a><a href="/archives/">归档</a></div><div class="sitemap-group"><span class="fs14">项目</span><a href="/wiki/tags/%E4%BA%91%E5%8E%9F%E7%94%9F/">云原生</a><a href="/wiki/tags/%E5%BC%80%E6%BA%90%E9%A1%B9%E7%9B%AE/">开源项目</a></div><div class="sitemap-group"><span class="fs14">社交</span><a href="/friends/">友链</a><a href="/">留言板·暂无</a></div><div class="sitemap-group"><span class="fs14">更多</span><a href="/about/">关于本站</a><a target="_blank" rel="noopener" href="https://github.com/Chentongda">GitHub</a></div></div><div class="text"><p>本博客所有文章除特别声明外，均采用 <a target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/">CC BY-NC-SA 4.0</a> 许可协议，转载请注明出处。</p>
+<p>本站由 <a href="https://ictd.io/">@Fabulist</a> 创建，使用 <a target="_blank" rel="noopener" href="https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1" title="v1.6.1">Stellar</a> 作为主题。</p>
+</div></footer>
+
+      <div class='float-panel mobile-only blur' style='display:none'>
+  <button type='button' class='sidebar-toggle mobile' onclick='sidebar.toggle()'>
+    <svg class="icon" style="width: 1em; height: 1em;vertical-align: middle;fill: currentColor;overflow: hidden;" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="15301"><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 2.3 26.8 24.6 47.5 51.6 47.6h416.5v4z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15302"></path><path d="M566.407 808.3c26.9-0.1 49.3-20.8 51.6-47.6-1.9-27.7-23.9-49.7-51.6-51.6h-412.6c-28.2-1.4-52.6 19.5-55.5 47.6 1.9 27.7 23.9 49.7 51.6 51.6h416.5z m309.3-249.9c26.9-0.1 49.3-20.8 51.6-47.6-2.2-26.8-24.6-47.5-51.6-47.6h-721.9c-27.7-2.8-52.5 17.4-55.3 45.1-0.1 0.8-0.1 1.7-0.2 2.5 0.9 27.2 23.6 48.5 50.7 47.6H875.707z m-103.1-245.9c26.9-0.1 49.3-20.8 51.6-47.6-0.4-28.3-23.2-51.1-51.5-51.6h-618.9c-29.5-1.1-54.3 21.9-55.5 51.4v0.2c1.4 27.8 25.2 49.2 53 47.8 0.8 0 1.7-0.1 2.5-0.2h618.8z" p-id="15303"></path></svg>
+  </button>
+</div>
+
+    </div>
+  </div>
+  <div class='scripts'>
+    <script type="text/javascript">
+  stellar = {
+    // 懒加载 css https://github.com/filamentgroup/loadCSS
+    loadCSS: (href, before, media, attributes) => {
+      var doc = window.document;
+      var ss = doc.createElement("link");
+      var ref;
+      if (before) {
+        ref = before;
+      } else {
+        var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes;
+        ref = refs[refs.length - 1];
+      }
+      var sheets = doc.styleSheets;
+      if (attributes) {
+        for (var attributeName in attributes) {
+          if (attributes.hasOwnProperty(attributeName)) {
+            ss.setAttribute(attributeName, attributes[attributeName]);
+          }
+        }
+      }
+      ss.rel = "stylesheet";
+      ss.href = href;
+      ss.media = "only x";
+      function ready(cb) {
+        if (doc.body) {
+          return cb();
+        }
+        setTimeout(function () {
+          ready(cb);
+        });
+      }
+      ready(function () {
+        ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling);
+      });
+      var onloadcssdefined = function (cb) {
+        var resolvedHref = ss.href;
+        var i = sheets.length;
+        while (i--) {
+          if (sheets[i].href === resolvedHref) {
+            return cb();
+          }
+        }
+        setTimeout(function () {
+          onloadcssdefined(cb);
+        });
+      };
+      function loadCB() {
+        if (ss.addEventListener) {
+          ss.removeEventListener("load", loadCB);
+        }
+        ss.media = media || "all";
+      }
+      if (ss.addEventListener) {
+        ss.addEventListener("load", loadCB);
+      }
+      ss.onloadcssdefined = onloadcssdefined;
+      onloadcssdefined(loadCB);
+      return ss;
+    },
+
+    // 从 butterfly 和 volantis 获得灵感
+    loadScript: (src, opt) => new Promise((resolve, reject) => {
+      var script = document.createElement('script');
+      script.src = src;
+      if (opt) {
+        for (let key of Object.keys(opt)) {
+          script[key] = opt[key]
+        }
+      } else {
+        // 默认异步，如果需要同步，第二个参数传入 {} 即可
+        script.async = true
+      }
+      script.onerror = reject
+      script.onload = script.onreadystatechange = function() {
+        const loadState = this.readyState
+        if (loadState && loadState !== 'loaded' && loadState !== 'complete') return
+        script.onload = script.onreadystatechange = null
+        resolve()
+      }
+      document.head.appendChild(script)
+    }),
+
+    // https://github.com/jerryc127/hexo-theme-butterfly
+    jQuery: (fn) => {
+      if (typeof jQuery === 'undefined') {
+        stellar.loadScript(stellar.plugins.jQuery).then(fn)
+      } else {
+        fn()
+      }
+    }
+  };
+  stellar.github = 'https://github.com/xaoxuu/hexo-theme-stellar/tree/1.6.1';
+  stellar.config = {
+    date_suffix: {
+      just: '刚刚',
+      min: '分钟前',
+      hour: '小时前',
+      day: '天前',
+      month: '个月前',
+    },
+  };
+
+  // required plugins (only load if needs)
+  stellar.plugins = {
+    jQuery: 'https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.min.js',
+    sitesjs: '/js/plugins/sites.js',
+    friendsjs: '/js/plugins/friends.js',
+  };
+
+  // optional plugins
+  if ('true' == 'true') {
+    stellar.plugins.lazyload = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/vanilla-lazyload@17.3.1/dist/lazyload.min.js","transition":"fade"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.swiper = Object.assign({"enable":true,"css":"https://unpkg.com/swiper@6/swiper-bundle.min.css","js":"https://unpkg.com/swiper@6/swiper-bundle.min.js"});
+  }
+  if ('' == 'true') {
+    stellar.plugins.scrollreveal = Object.assign({"enable":null,"js":"https://cdn.jsdelivr.net/npm/scrollreveal@4.0.9/dist/scrollreveal.min.js","distance":"8px","duration":500,"interval":100,"scale":1});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.preload = Object.assign({"enable":true,"service":"instant_page","instant_page":"https://cdn.jsdelivr.net/gh/volantis-x/cdn-volantis@4.1.2/js/instant_page.js","flying_pages":"https://cdn.jsdelivr.net/gh/gijo-varghese/flying-pages@2.1.2/flying-pages.min.js"});
+  }
+  if ('true' == 'true') {
+    stellar.plugins.fancybox = Object.assign({"enable":true,"js":"https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.umd.js","css":"https://cdn.jsdelivr.net/npm/@fancyapps/ui@4.0/dist/fancybox.css","selector":".swiper-slide img"});
+  }
+</script>
+
+<!-- required -->
+
+  
+<script src="/js/main.js" async></script>
+
+
+
+<!-- optional -->
+
+
+
+<!-- inject -->
+
+
+  </div>
+</body>
+</html>
